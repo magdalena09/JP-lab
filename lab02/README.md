@@ -1,4 +1,4 @@
-#Kolekcje i mapy
+# Kolekcje i mapy
 Wykorzystane struktury:
 1. Set - HashSet, TreeSet
 2. List - ArrayList, LinkedList
