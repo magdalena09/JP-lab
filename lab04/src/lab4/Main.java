@@ -1,7 +1,6 @@
 package lab4;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -50,7 +49,7 @@ public class Main extends JFrame
             {
                 super.mouseEntered(me);
                 if(buttonRun.getX() > 95 && buttonRun.getX() < 675 && buttonRun.getY() > 40 && buttonRun.getY() < 520)
-                    buttonRun.setBounds(random.nextInt(650),random.nextInt(540),150,40);
+                    buttonRun.setLocation(random.nextInt(50),random.nextInt(40));
             }
         });
 
@@ -58,12 +57,9 @@ public class Main extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) { //kanwa rysuje się po przyciśnięciu przycisku
                 JPanel kanwa = new Kanwa();
-                kanwa.setBounds(5,5, 775, 555);
-                kanwa.setBackground(Color.white);
                 getContentPane().removeAll();
                 add(kanwa);
                 getContentPane().repaint();
-                kanwa.setLayout(null);
             }
         });
 
