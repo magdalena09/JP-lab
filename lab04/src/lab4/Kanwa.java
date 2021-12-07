@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Kanwa extends JPanel implements MouseInputListener {
 
@@ -14,13 +16,10 @@ public class Kanwa extends JPanel implements MouseInputListener {
     private int keyCode;
     private int x;
     private int y;
+    ArrayList<Point> points = new ArrayList<>();
 
     public boolean isDrawing() {
         return drawing;
-    }
-
-    public void setDrawing(boolean drawing){
-        this.drawing = drawing;
     }
 
     public void addDrawing(Draw shape){
@@ -33,8 +32,7 @@ public class Kanwa extends JPanel implements MouseInputListener {
         setLayout(null);
         setBounds(5,5, 775, 555);
         setBackground(Color.white);
-
-        addKeyListener(new KeyAdapter() { //nie wchodzi tutaj kod w ogóle
+        this.addKeyListener(new KeyAdapter() { // k - kwadrat, o - koło
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
@@ -52,14 +50,19 @@ public class Kanwa extends JPanel implements MouseInputListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Random rand = new Random();
         Graphics2D g2d = (Graphics2D) g.create();
-        try {
-            if(!isDrawing()) return;
-            if(shape == null) return;
-            g2d.setColor(Color.green);
+        if(!isDrawing()) return;
+        if(shape == null) return;
+        g2d.setColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+        int a,b;
+        for(Point p: points) {
+            a = (int)p.getX();
+            b = (int)p.getY();
+            shape.setX(a);
+            shape.setY(b);
+            addDrawing(shape);
             shape.draw(g2d);
-        } finally {
-            g2d.dispose();
         }
     }
 
@@ -67,13 +70,15 @@ public class Kanwa extends JPanel implements MouseInputListener {
     public void mouseClicked(MouseEvent e) {
         x = e.getX();
         y = e.getY();
-        Draw circle = new Circle(x,y);
+        points.add(new Point(x, y));
+        Draw circle = new Circle(x, y); //początkowo rysuje kółka
         addDrawing(circle);
-        if (keyCode == KeyEvent.VK_K){
+
+        if (keyCode == KeyEvent.VK_K){ //'k' zamienia rysowane kształty na kwadraty
                 Draw square = new Square(x,y);
                 addDrawing(square);
         }
-        if (keyCode == KeyEvent.VK_O){
+        if (keyCode == KeyEvent.VK_O){ //'o' zamienia rysowane kształty na kółka
                 circle = new Circle(x,y);
                 addDrawing(circle);
         }

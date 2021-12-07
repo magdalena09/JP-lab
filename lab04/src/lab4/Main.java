@@ -1,6 +1,7 @@
 package lab4;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -37,9 +38,10 @@ public class Main extends JFrame
         JPanel panel = new JPanel();
         panel.setBounds(0,0,800,600);
         panel.setLayout(null);
+        panel.setBackground(Color.pink);
         setContentPane(panel);
         buttonRun = new JButton("Złap mnie");
-        buttonRun.setBounds(100,100,150,40);
+        buttonRun.setBounds(300,200,160,60);
         panel.add(buttonRun);
 
         buttonRun.addMouseListener(new MouseAdapter()
@@ -48,18 +50,27 @@ public class Main extends JFrame
             public void mouseEntered(MouseEvent me) //nowe położenie przycisku po najechaniu na niego
             {
                 super.mouseEntered(me);
-                if(buttonRun.getX() > 95 && buttonRun.getX() < 675 && buttonRun.getY() > 40 && buttonRun.getY() < 520)
-                    buttonRun.setLocation(random.nextInt(50),random.nextInt(40));
+                //całe okno 800x600, strefa bezpieczna okna(tam, gdzie można nacisnąć przycisk) to
+                // (50+wymiar przycisku) od stron prawo-dół i 50 od stron lewo-góra
+                if(buttonRun.getX() > 50 && buttonRun.getX() < 590 && buttonRun.getY() > 50 && buttonRun.getY() < 490)
+                    buttonRun.setLocation(random.nextInt(640),random.nextInt(540));
             }
         });
 
-        buttonRun.addActionListener(new ActionListener() {
+        buttonRun.addActionListener(new ActionListener() {//kanwa rysuje się po przyciśnięciu przycisku
             @Override
-            public void actionPerformed(ActionEvent e) { //kanwa rysuje się po przyciśnięciu przycisku
+            public void actionPerformed(ActionEvent e) {
+                //potrzeba nowej ramki, na starym panelu nie były zczytywane klawisze
+                JFrame frame = new JFrame("Rysowanie. 'k' - kwadraty, 'o' - kółka");
+                frame.setLayout(null);
+                frame.setResizable(false);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(800,600);
+                frame.setVisible(true);
+                dispose(); //zamknij okno z przyciskiem
+
                 JPanel kanwa = new Kanwa();
-                getContentPane().removeAll();
-                add(kanwa);
-                getContentPane().repaint();
+                frame.add(kanwa);
             }
         });
 
